@@ -22,11 +22,11 @@ X_train, X_test, y_train, y_test = train_test_split(
 cv = StratifiedKFold(n_splits=3, shuffle=True, random_state=42)
 
 lgb_params = {
-    'num_leaves': [8, 16],
-    'min_child_samples': [30, 60]
+    'num_leaves': [8, 53],
+    'min_child_samples': [64, 90]
 }
 lgbm = lgb.LGBMClassifier(
-    class_weight='balanced', random_state=42, n_jobs=-1, verbosity=-1
+    class_weight='balanced', random_state=42, n_jobs=1, verbosity=-1
 )
 lgb_search = GridSearchCV(
     lgbm,
@@ -49,10 +49,10 @@ model = lgb_best
 
 y_pred_best = model.predict(X_test)
 cm = confusion_matrix(y_test, y_pred_best)
-disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['Легальные (0)', 'Мошеннические (1)'])
-disp.plot(cmap=plt.cm.Blues, values_format='d')
-plt.title(f'Матрица ошибок — {'LightGBM'}')
-plt.show()
+# disp = ConfusionMatrixDisplay(confusion_matrix=cm, display_labels=['Легальные (0)', 'Мошеннические (1)'])
+# disp.plot(cmap=plt.cm.Blues, values_format='d')
+# plt.title(f'Матрица ошибок — {'LightGBM'}')
+# plt.show()
 
 tn, fp, fn, tp = cm.ravel()
 print(f"\nTN={tn}, FP={fp}, FN={fn}, TP={tp}")
